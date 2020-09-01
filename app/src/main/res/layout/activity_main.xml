@@ -4,22 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-   android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/itemname"
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:layout_marginLeft="20dp">
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="First Name:"/>
+       <EditText
+           android:id="@+id/EditTxtfn"
+           android:layout_width="195dp"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="20dp"/>
+
+   </LinearLayout>
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Item name" />
+        android:layout_marginLeft="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Name:"/>
+        <EditText
+            android:id="@+id/EditTxtln"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"/>
+    </LinearLayout>
 
     <Button
-        android:id="@+id/ID_Record"
+        android:id="@+id/btnRecord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="319dp" />
+        android:layout_gravity="center_horizontal"
+        android:text="Record" />
+    <Button
+        android:id="@+id/btnRetrieve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Retrieve"/>
 
 </LinearLayout>
