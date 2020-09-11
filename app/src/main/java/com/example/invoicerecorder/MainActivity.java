@@ -14,10 +14,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.SQLOutput;
+
 public class MainActivity extends AppCompatActivity {
 
-    EditText firstName,lastName;
-    Button record,retrieve;
+    EditText firstName,lastName,deleteText;
+    Button record,retrieve,deletebyID;
 
     //initiate firebase
    // final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -26,13 +28,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        deleteText=findViewById(R.id.EditTxtId);
         firstName = findViewById(R.id.EditTxtfn);
         lastName = findViewById(R.id.EditTxtln);
 
         record = findViewById(R.id.btnRecord);
         retrieve = findViewById(R.id.btnRetrieve);
-
+        deletebyID = findViewById(R.id.btnDelete);
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 databaseReference.child(key).setValue(recordItem);
 
             }
-        });
+        });//end of add button
         retrieve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,5 +81,29 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
+        //end of button
+        deletebyID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //attemp delete by id by input(not goint to do this way just to test) later on we
+                //get id by select on listview and get id auto to put in the rmID.
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("invoice").child("item");
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String rmID = deleteText.getText().toString();
+                        //databaseReference.child(rmID).removeValue();
+                        System.out.println(rmID);
+                        System.out.println("button click");
+                        databaseReference.child(rmID).removeValue();
+
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });//end of delete button
+    }//do not delete this one
 }
