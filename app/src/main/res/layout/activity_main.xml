@@ -51,4 +51,18 @@
         android:layout_gravity="center_horizontal"
         android:text="Retrieve"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter id to delete "/>
+    <EditText
+        android:id="@+id/getIdtoDelete"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"/>
+
 </LinearLayout>

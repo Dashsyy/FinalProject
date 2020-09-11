@@ -40,6 +40,6 @@ public class record_item {
     }
 
     public String toString(){
-        return "firstName"+firstName+"\n"+"lastName"+lastName+"\n";
+        return "firstname"+firstName+"\n"+"lastname"+lastName+"\n";
     }
 }
