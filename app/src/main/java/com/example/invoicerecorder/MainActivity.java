@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -40,30 +41,39 @@ public class MainActivity extends AppCompatActivity {
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            DatabaseReference postsRef = ref.child("item");
-            DatabaseReference newPost = postsRef.push();
+                String key= ref.push().getKey();
+                System.out.println(key);
 
-            //get data
+
+                //get data from edit text
                 String firstname = firstName.getText().toString();
                 String lastname  = lastName.getText().toString();
 
+
                 record_item recordItem= new record_item(firstname,lastname);
 
-                newPost.setValue(recordItem);
+                ref.child(key).setValue(recordItem);
 
             }
         });
         retrieve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //set path for database to retrieve
+                ref= FirebaseDatabase.getInstance().getReference().child("invoice").child("item");
                 ref.addValueEventListener(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String postid = dataSnapshot.getKey();
-                     //  String fn= dataSnapshot.child("firstName").getValue().toString();
-                     //  String ln= dataSnapshot.child("lastName").getValue().toString();
-                     // record_item recordItem = new record_item(fn,ln);
-                        System.out.println(postid);
+                    //record_item recordItem = dataSnapshot.getValue(record_item.class);
+                   for (DataSnapshot chilSnapshot : dataSnapshot.getChildren()){
+                       String getkey = chilSnapshot.getKey();
+
+                       String firstname = dataSnapshot.child(getkey).child("firstname").getValue().toString();
+                       String lastname = dataSnapshot.child(getkey).child("lastname").getValue().toString();
+                       System.out.println(firstname+lastname);
+                   }
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {

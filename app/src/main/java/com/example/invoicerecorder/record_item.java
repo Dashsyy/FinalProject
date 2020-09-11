@@ -1,5 +1,7 @@
 package com.example.invoicerecorder;
 
+import com.google.firebase.database.DatabaseReference;
+
 public class record_item {
     private String firstName,lastName,iD;
 
@@ -29,6 +31,7 @@ public class record_item {
     }
 
     public record_item(String firstName, String lastName){
+
         this.firstName=firstName;
         this.lastName=lastName;
     }
@@ -37,6 +40,6 @@ public class record_item {
     }
 
     public String toString(){
-        return "iD"+iD+"\n"+"First name"+firstName+"\n"+"LastName"+lastName+"\n";
+        return "firstName"+firstName+"\n"+"lastName"+lastName+"\n";
     }
 }
