@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:weightSum="100"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Name Item"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:id="@+id/TxtViewItem"
+        android:layout_weight="33.3"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="66.66"
+        android:text="Item Price"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:id="@+id/TxtViewPrice"
+        />
+</LinearLayout>
