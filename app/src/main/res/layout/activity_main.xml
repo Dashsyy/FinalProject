@@ -42,10 +42,18 @@
         android:layout_weight="1"
         android:drawSelectorOnTop="false"
         android:orientation="horizontal">
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp" />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listView" />
+
 </LinearLayout>
 
     <LinearLayout
@@ -60,6 +68,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Delete" />
+        <Button
+            android:id="@+id/recordItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"/>
     </LinearLayout>
 
 </LinearLayout>

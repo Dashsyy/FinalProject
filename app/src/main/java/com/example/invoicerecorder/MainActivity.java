@@ -5,9 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,11 +23,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     EditText firstName,lastName,deleteText;
-    Button record,retrieve,deletebyID;
+    Button record,retrieve,deletebyID,showFragment,buttonFragment;
     ListView listView;
+
     ArrayList<record_item> record_itemArraylist = new ArrayList<>();;
 
     //initiate firebase
@@ -37,29 +43,43 @@ public class MainActivity extends AppCompatActivity {
         deleteText=findViewById(R.id.EditTxtId);
         //find button
         record = findViewById(R.id.btnRecord);
+        showFragment = findViewById(R.id.recordItem);
         retrieve = findViewById(R.id.btnRetrieve);
         deletebyID = findViewById(R.id.btnDelete);
         //find listview
         listView = findViewById(R.id.listView);
-
+        //custom spinner
+        Spinner spinner = (Spinner) findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> adapterForSpinner = ArrayAdapter.createFromResource(this,R.array.actions,android.R.layout.simple_spinner_item);
+        adapterForSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapterForSpinner);
+        spinner.setOnItemSelectedListener(this);
+        //spinner.setOnItemSelectedListener(this);
         //custom listview
         final recorditemAdapter adapter = new recorditemAdapter(this,R.layout.listview_adapter,record_itemArraylist);
         listView.setAdapter(adapter);
+
+        //Fragment to add
+      showFragment.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              openDialog();
+          }
+      });
+
         //button action
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                databaseReference = FirebaseDatabase.getInstance().getReference().child("invoice").child("item");
                 String key= databaseReference.push().getKey();
-                System.out.println(key);
-
                 //get data from edit text
-                String firstname="hhh";
-                String lastname="hhh";
+                //String firstname="helo";
+                //String lastname="hi";
 
-                record_item recordItem= new record_item(firstname,lastname);
+                //record_item recordItem= new record_item(firstname,lastname);
 
-                databaseReference.child(key).setValue(recordItem);
+                //databaseReference.child(key).setValue(recordItem);
 
             }
         });//end of add button
@@ -81,11 +101,12 @@ public class MainActivity extends AppCompatActivity {
                        String lastname = dataSnapshot.child(getkey).child("lastName").getValue().toString();
 
                        //test function
+
                          record_item item1= new record_item(firstname,lastname);
                          record_itemArraylist.add(item1);
                          System.out.println(record_itemArraylist);
-
                          adapter.notifyDataSetChanged();
+
                         }
 
                     }
@@ -98,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //end of button
+
         deletebyID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +144,25 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });//end of delete button
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+              //  Object object = listView.getAdapter().getItem(i);
+              //  String value = object.toString();
+              //  System.out.println(value);
+                String name =((TextView) view.findViewById(R.id.TxtViewItem)).getText().toString();
+                String price =((TextView) view.findViewById(R.id.TxtViewPrice)).getText().toString();
+                System.out.println(name+price);
+
+                Toast.makeText(getApplicationContext(),"you selected "+ name+price,Toast.LENGTH_LONG).show();
+            }
+        });
+        listView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+            }
+        });
         //ListView
         //retrieve data from firebase
 
@@ -137,4 +178,19 @@ public class MainActivity extends AppCompatActivity {
         //recorditemAdapter adapter = new recorditemAdapter(this,R.layout.listview_adapter,record_itemArraylist);
         //listView.setAdapter(adapter);
     }//do not delete this one
+    public void openDialog(){
+        record_item_fragment recordItemFragment = new record_item_fragment();
+        recordItemFragment.show(getSupportFragmentManager(),"Input data");
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String text = adapterView.getItemAtPosition(i).toString();
+        Toast.makeText(this, "text"+text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }
