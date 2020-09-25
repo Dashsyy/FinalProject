@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EditAndDelete">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
+        <EditText
+            android:id="@+id/EditTxtItem1"
+            android:layout_below="@+id/FragmentTitle"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:hint="Item"/>
+        <EditText
+            android:id="@+id/EditTxtPrice1"
+            android:layout_width="195dp"
+            android:layout_below="@+id/EditTxtItem"
+            android:layout_height="wrap_content"
+            android:hint="Price"/>
+        <EditText
+            android:id="@+id/EditTxtQuantity1"
+            android:layout_width="195dp"
+            android:layout_below="@+id/EditTxtItem"
+            android:layout_height="wrap_content"
+            android:hint="Quantity"/>
+    </LinearLayout>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <Button
+           android:id="@+id/btnUpdate"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:text="Update" />
+       <Button
+           android:id="@+id/btnDelete"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:text="Delete" />
+   </LinearLayout>
+
+</LinearLayout>
