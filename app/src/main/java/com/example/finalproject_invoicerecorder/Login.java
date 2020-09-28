@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,7 @@ public class Login extends AppCompatActivity {
     Button mLogin;
     TextView tRegister, tRecover;
     FirebaseAuth fAuth;
-
+    String email;
     ProgressDialog pd;
 
     DatabaseReference databaseReference;
@@ -73,13 +74,19 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
+                //
+                //Send email to mainactivity
+
                 //Authenticate the user
                 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            Intent intent = new Intent(Login.this,MainActivity.class);
+                            intent.putExtra("email",encodeUderEmail(email));
+                            System.out.println(encodeUderEmail(email)+" In login");
                             Toast.makeText(Login.this, "Logged in Succesfully ", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                            startActivity(intent);
                         }else {
                             Toast.makeText(Login.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -171,5 +178,8 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(Login.this,"",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    public String encodeUderEmail(String userEmail){
+        return userEmail.replace(".",",");
     }
 }

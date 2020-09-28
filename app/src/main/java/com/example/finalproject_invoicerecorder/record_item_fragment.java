@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class record_item_fragment extends AppCompatDialogFragment {
     EditText itemPrice;
     EditText itemQuantity;
     TextView dateandtime;
+    String emailForIdFromMain;
     String currentDateString;
 
     @NonNull
@@ -51,24 +53,26 @@ public class record_item_fragment extends AppCompatDialogFragment {
         itemPrice = view.findViewById(R.id.EditTxtPrice);
         itemQuantity = view.findViewById(R.id.EditTxtQuantity);
         dateandtime = view.findViewById(R.id.btnDateAndTime);
+        //to get data from mainactivity to fragment
+        MainActivity activity = (MainActivity) getActivity();
+        emailForIdFromMain = activity.getEmailForId();
 
 
         builder.setView(view).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
             }
         }).setPositiveButton("Record", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //Send data to firebase here
-               databaseReference = FirebaseDatabase.getInstance().getReference().child("invoice").child("item");
+                databaseReference = FirebaseDatabase.getInstance().getReference().child(emailForIdFromMain).child("invoice");
                //generate random key
                String key= databaseReference.push().getKey();
-
                 String item= itemName.getText().toString();
                 String price= itemPrice.getText().toString();
                 String quantity= itemQuantity.getText().toString();
-
                record_item recordItem = new record_item(key,item,price,quantity);
                databaseReference.child(key).setValue(recordItem);
 

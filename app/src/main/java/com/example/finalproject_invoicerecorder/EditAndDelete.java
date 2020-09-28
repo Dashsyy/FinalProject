@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class EditAndDelete extends AppCompatActivity {
     String name,price,uID;
     String updateItem,updatePrice,updateitemQuantity;
+    String emailForIdFromMain;
     EditText editItem,editPrice,editeQuantity;
     EditText editItemUpdate,editPriceUpdate,editQuantityUpdate;
     Button buttonDeleteById,buttonUpdateById;
@@ -40,6 +41,7 @@ public class EditAndDelete extends AppCompatActivity {
         uID = intent.getStringExtra("uID");
         name = intent.getStringExtra("name");
         price = intent.getStringExtra("price");
+        emailForIdFromMain = intent.getStringExtra("email");
         getSupportActionBar().setTitle("Edit");
 
         //find edittext
@@ -47,20 +49,23 @@ public class EditAndDelete extends AppCompatActivity {
         editPrice = findViewById(R.id.EditTxtPrice1);
         editeQuantity = findViewById(R.id.EditTxtQuantity1);
 
+        System.out.println(emailForIdFromMain+"This is in update and delete");
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("invoice").child("item").child(uID);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String quantity = snapshot.child("quantity").getValue().toString();
-                editeQuantity.setText(quantity);
-            }
+        if (emailForIdFromMain !=null){
+            databaseReference = FirebaseDatabase.getInstance().getReference().child(emailForIdFromMain).child("invoice").child(uID);
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String quantity = snapshot.child("quantity").getValue().toString();
+                    editeQuantity.setText(quantity);
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }
 
         //set text to edittext
         editItem.setText(name);
@@ -79,11 +84,11 @@ public class EditAndDelete extends AppCompatActivity {
         buttonDeleteById.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference = FirebaseDatabase.getInstance().getReference().child("invoice").child("item");
+                databaseReference = FirebaseDatabase.getInstance().getReference().child(emailForIdFromMain).child("invoice").child(uID);
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        databaseReference.child(uID).removeValue();
+                        databaseReference.removeValue();
                         Toast.makeText(EditAndDelete.this,"Delete sucessfully",Toast.LENGTH_LONG).show();
                     }
 
@@ -101,20 +106,23 @@ public class EditAndDelete extends AppCompatActivity {
         buttonUpdateById.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference = FirebaseDatabase.getInstance().getReference().child("invoice").child("item");
+                databaseReference = FirebaseDatabase.getInstance().getReference().child(emailForIdFromMain).child("invoice").child(uID);
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         //perform action
+
                         updateItem = editItemUpdate.getText().toString();
                         updatePrice = editPriceUpdate.getText().toString();
                         updateitemQuantity = editQuantityUpdate.getText().toString();
                         record_item = new record_item(uID,updateItem,updatePrice,updateitemQuantity);
-                        databaseReference.child(uID).setValue(record_item);
+                        databaseReference.setValue(record_item);
+
                         Intent intent = new Intent(EditAndDelete.this,MainActivity.class);
-                        startActivity(intent);
+                        intent.putExtra("email",emailForIdFromMain);
                         Toast.makeText(EditAndDelete.this,"Update sucessfully",Toast.LENGTH_LONG).show();
+                        startActivity(intent);
 
                     }
 
